@@ -1,7 +1,7 @@
 {
   "appId": "com.jamonez.nomnom",
   "appName": "NomNom",
-  "webDir": "dist",
+  "webDir": "build",
   "plugins": {
     "SplashScreen": {
       "launchAutoHide": false
