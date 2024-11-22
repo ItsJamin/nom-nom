@@ -18,12 +18,13 @@ const items = [
     div.setAttribute("draggable", "true");
     div.innerHTML = `
       <div class="left">
-        <span>${icon || ""}</span> 
+        <p class="icon">${icon || ""}</p> 
         <span class="name">${name}</span>
       </div>
       <div class="right">
         <input type="text" class="amount" value="" readonly>
-        <input type="checkbox">
+        <input type="checkbox" id="checkbox">
+        <label class="checkmark" for="checkbox"></label>
       </div>
     `;
     list.insertBefore(div, list.firstChild);
@@ -37,7 +38,13 @@ const items = [
     const checkbox = div.querySelector("input[type='checkbox']");
 
     checkbox.addEventListener("change", () => {
-        if (checkbox.checked) div.remove();
+        if (checkbox.checked) {
+            div.classList.add('disappear');
+            setTimeout(() => {
+                div.remove();
+            }, 200);
+            
+        }
     });
 
     searchBar.value = ""; // Suchleiste leeren
