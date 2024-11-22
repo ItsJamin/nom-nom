@@ -73,42 +73,45 @@ const items = [
     const filteredItems = items.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())
     );
-  
-    if (filteredItems.length === 0) {
-      // Kein Ergebnis: Geist-Item anzeigen
+
+    // Gefundene Ergebnisse anzeigen
+    filteredItems.forEach((item) => {
+      const result = document.createElement("div");
+      result.classList.add("result");
+      result.innerHTML = `
+        <div class="left">
+          <span>${item.icon}</span>
+          <span class="name">${capitalizeFirstLetter(item.name)}</span>
+        </div>
+        <div class="right">
+          <input type="checkbox" id="checkbox">
+          <label class="checkmark" for="checkbox"></label>
+        </div>
+      `;
+      result.addEventListener("click", () =>
+        addItemToList(capitalizeFirstLetter(item.name), item.icon)
+      );
+      searchResults.appendChild(result);
+    });
+
+    if (filteredItems.includes(query.name) == false) {
+      // Keine exakte Übereinstimmung: Geist-Item anzeigen
       const ghostResult = document.createElement("div");
       ghostResult.classList.add("result");
       ghostResult.innerHTML = `
         <div class="left">
-          <span>❓</span>
+          <span>ㅤ</span>
           <span class="name">${capitalizeFirstLetter(query)}</span>
         </div>
         <div class="right">
         </div>
       `;
       ghostResult.addEventListener("click", () =>
-        addItemToList(capitalizeFirstLetter(query), "❓")
+        addItemToList(capitalizeFirstLetter(query), "ㅤ")
       );
       searchResults.appendChild(ghostResult);
-    } else {
-      // Gefundene Ergebnisse anzeigen
-      filteredItems.forEach((item) => {
-        const result = document.createElement("div");
-        result.classList.add("result");
-        result.innerHTML = `
-          <div class="left">
-            <span>${item.icon}</span>
-            <span class="name">${capitalizeFirstLetter(item.name)}</span>
-          </div>
-          <div class="right">
-          </div>
-        `;
-        result.addEventListener("click", () =>
-          addItemToList(capitalizeFirstLetter(item.name), item.icon)
-        );
-        searchResults.appendChild(result);
-      });
     }
+    
   }
 
   // Drag-and-Drop-Funktionalität
@@ -186,6 +189,13 @@ const items = [
   searchBar.addEventListener("input", (event) => {
     const query = event.target.value.trim();
     updateSearchResults(query);
+  });
+
+  searchBar.addEventListener("keypress", (event) => {
+    const query = event.target.value.trim();
+    if (event.key === "Enter" && query.length > 0) {
+      addItemToList(capitalizeFirstLetter(query), "ㅤ");
+    }
   });
   
   // Vorhandene Items in der Einkaufsliste anzeigen
