@@ -1,5 +1,5 @@
 // Initialisiere die Einkaufsliste
-const items = [
+var items = [
     { name: "Tomaten", icon: "🥕" },
     { name: "Erbsen", icon: "🥕" },
     { name: "Milch", icon: "🍼" },
@@ -78,6 +78,7 @@ const items = [
     );
 
     // Gefundene Ergebnisse anzeigen
+    var i = 0
     filteredItems.forEach((item) => {
       const result = document.createElement("div");
       result.classList.add("result");
@@ -87,14 +88,36 @@ const items = [
           <span class="name">${capitalizeFirstLetter(item.name)}</span>
         </div>
         <div class="right">
-          <input type="checkbox" id="checkbox">
-          <label class="checkmark" for="checkbox"></label>
+          <input type="checkbox" class="checkbox" id="${i}">
+          <label class="checkmark" for="${i}"></label>
         </div>
       `;
+
+      const checkbox = result.querySelector("input[type='checkbox']");
+
+      checkbox.addEventListener("change", () => {
+          if (checkbox.checked) {
+            items = items.filter(itemm => itemm !== item);
+            result.classList.add('disappear');
+            setTimeout(() => {
+                result.remove();
+            }, 200);
+          }
+      });
+
       result.addEventListener("click", () =>
-        addItemToList(capitalizeFirstLetter(item.name), item.icon)
+        {
+          setTimeout(() => {
+            if (result.classList.contains("disappear") == false) {
+              addItemToList(capitalizeFirstLetter(item.name), item.icon)
+            }
+        },10);
+        }
       );
+      
+      
       searchResults.appendChild(result);
+      i++;
     });
 
     if (filteredItems.includes(query.name) == false) {
