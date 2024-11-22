@@ -25,8 +25,26 @@
     <meta name="theme-color" content="#31d53d" />
   </head>
   <body>
-    <capacitor-welcome></capacitor-welcome>
-
-    <script src="./js/capacitor-welcome.js" type="module"></script>
+    <div class="container">
+      <!-- Suchfeld -->
+      <div class="container">
+        <!-- Suchfeld -->
+        <input type="text" class="search-bar" placeholder="...">
+    
+        <!-- Suchergebnisse -->
+        <div class="search-results"></div>
+    
+        <!-- Einkaufsliste -->
+        <div class="divider"></div>
+        <div class="list"></div>
+    
+  
+      <!-- Navigation Bar -->
+      <nav class="navbar">
+        <button class="active">📝</button>
+        <button>📖</button>
+      </nav>
+    </div>
+    <script src="js/script.js"></script>
   </body>
 </html>
