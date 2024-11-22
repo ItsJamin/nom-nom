@@ -1,0 +1,10 @@
+{
+  "appId": "com.jamonez.nomnom",
+  "appName": "NomNom",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}
