@@ -129,7 +129,7 @@ body * {
 
 /* Checkbox */
 
-.right #checkbox {
+.right .checkbox {
   position: absolute;
   opacity: 0;
   cursor: pointer;

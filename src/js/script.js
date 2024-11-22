@@ -16,6 +16,8 @@ const items = [
     const div = document.createElement("div");
     div.classList.add("item");
     div.setAttribute("draggable", "true");
+    const uniqueId = `checkbox-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+
     div.innerHTML = `
       <div class="left">
         <p class="icon">${icon || ""}</p> 
@@ -23,13 +25,17 @@ const items = [
       </div>
       <div class="right">
         <input type="text" class="amount" value="" readonly>
-        <input type="checkbox" id="checkbox">
-        <label class="checkmark" for="checkbox"></label>
+        <input type="checkbox" class="checkbox" id="${uniqueId}">
+        <label class="checkmark" for="${uniqueId}"></label>
       </div>
     `;
+
     list.insertBefore(div, list.firstChild);
     searchBar.value = ""; // Suchleiste leeren
     searchResults.innerHTML = ""; // Suchergebnisse leeren
+
+    searchBar.value = ""; // Suchleiste leeren
+    searchResults.innerHTML = "";
   
     // Mengenbearbeitung aktivieren
     activateAmountEditing(div.querySelector(".amount"));
@@ -46,9 +52,6 @@ const items = [
             
         }
     });
-
-    searchBar.value = ""; // Suchleiste leeren
-    searchResults.innerHTML = "";
   }
   
   // Funktion zur Bearbeitung der Mengenangabe
