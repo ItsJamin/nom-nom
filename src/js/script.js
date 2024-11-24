@@ -207,9 +207,7 @@ var items = [
   }
   
   // Helferfunktion zum Großschreiben der ersten Buchstaben
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-  }
+  
   
   // Event-Listener für die Suchleiste
   searchBar.addEventListener("input", (event) => {
