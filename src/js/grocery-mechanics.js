@@ -19,11 +19,15 @@ function updateSearchResults(query) {
 
     if (query === "") return; // Keine Suche bei leerem Input
 
+    query = query.toLowerCase();
+
     // Auf die Datenbank zugreifen und Ergebnisse holen
     const filteredItems = db.getObjectsForQuery(query);
 
     // Gefundene Ergebnisse anzeigen
     var i = 0;
+    var exactMatch = false;
+
     filteredItems.forEach((item) => {
         const result = document.createElement("div");
         result.classList.add("result");
@@ -60,9 +64,13 @@ function updateSearchResults(query) {
 
         searchResults.appendChild(result);
         i++;
+
+        if (query == item.name) {
+            exactMatch = true;
+        }
     });
 
-    if (filteredItems.length === 0) {
+    if (exactMatch == false) {
         // Keine exakte Übereinstimmung: Geist-Item anzeigen
         const ghostResult = document.createElement("div");
         ghostResult.classList.add("result");
@@ -75,10 +83,10 @@ function updateSearchResults(query) {
         `;
         ghostResult.addEventListener("click", () => {
             // TODO: Create new database entry
-            item = null;
+            var item = db.createItem(query);
             addItemToList(item);
         });
-        searchResults.appendChild(ghostResult);
+        searchResults.insertBefore(ghostResult, searchResults.firstChild);
     }
 }
 

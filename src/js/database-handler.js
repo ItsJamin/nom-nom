@@ -50,18 +50,35 @@ export function getObjectsForQuery(query) {
         item.name.toLowerCase().includes(query) || query.includes(item.name.toLowerCase())
     ).map(item => {
         // Find the category name
-        const categoryItem = tCategories.find(category => category.id === item.category)?.icon || "Unknown";
+        const categoryItem = tCategories.find(category => category.id === item.category)?.icon || "ㅤ";
 
         // Find the unit, if applicable
-        const unitInfo = tUnits.find(unit => unit.id === item.unit);
-        const unitUnit = unitInfo ? unitInfo.units[0] : "piece";
+        const unitInfo = tUnits.find(unit => unit.id === item.unit)[0];
 
         return {
             name: item.name,
             categoryItem: categoryItem,
-            unitUnit: unitUnit
+            unitUnit: unitInfo
         };
     });
 
     return results;
+}
+
+export function createItem(name) {
+    var item = {
+        name: name,
+        category: null,
+        unit: 2
+    }
+    tItems.push(item);
+
+    const categoryItem = tCategories.find(category => category.id === item.category)?.icon || "ㅤ";
+    const unitInfo = tUnits.find(unit => unit.id === item.unit)[0];
+
+    return {
+        name: item.name,
+        categoryItem: categoryItem,
+        unitUnit: unitInfo
+    };
 }
