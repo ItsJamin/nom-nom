@@ -5,7 +5,7 @@ import { capitalizeFirstLetter } from './utils.js';
 
 const searchBar = document.querySelector(".search-bar");
 const searchResults = document.querySelector(".search-results");
-const list = document.querySelector(".list");
+const listItems = document.querySelector(".list");
 
 searchBar.addEventListener("input", (event) => {
     const query = event.target.value.trim();
@@ -33,8 +33,8 @@ function updateSearchResults(query) {
                 <span class="name">${capitalizeFirstLetter(item.name)}</span>
             </div>
             <div class="right">
-                <input type="checkbox" class="checkbox" id="${i}">
-                <label class="checkmark" for="${i}"></label>
+                <input type="checkbox" class="checkbox" id="${item.name}">
+                <label class="checkmark" for="${item.name}"></label>
             </div>
         `;
 
@@ -53,7 +53,7 @@ function updateSearchResults(query) {
         result.addEventListener("click", () => {
             setTimeout(() => {
                 if (!result.classList.contains("disappear")) {
-                    addItemToList(capitalizeFirstLetter(item.name), item.categoryItem);
+                    addItemToList(item);
                 }
             }, 10);
         });
@@ -69,13 +69,69 @@ function updateSearchResults(query) {
         ghostResult.innerHTML = `
             <div class="left">
                 <span>ㅤ</span>
-                <span class="name">${capitalizeFirstLetter(query)}</span>
+                <span class="name" id="Ghost">${capitalizeFirstLetter(query)}</span>
             </div>
             <div class="right"></div>
         `;
-        ghostResult.addEventListener("click", () =>
-            addItemToList(capitalizeFirstLetter(query), "ㅤ")
-        );
+        ghostResult.addEventListener("click", () => {
+            // TODO: Create new database entry
+            item = null;
+            addItemToList(item);
+        });
         searchResults.appendChild(ghostResult);
     }
+}
+
+function addItemToList(item) {
+    const div = document.createElement("div");
+
+    div.classList.add("item");
+    div.setAttribute("draggable", "true");
+
+    
+    // Check if item is already in the list
+    const divElements = document.querySelectorAll('div > div');
+    const matchingDiv = Array.from(divElements).find(outerDiv => {
+        const span = outerDiv.querySelector('span'); // Check for a span within the inner div
+        return span && span.textContent === item.name; // Match the exact text
+    });
+
+    if (matchingDiv != null) {
+        return null;
+    }
+
+    div.innerHTML = `
+      <div class="left">
+        <p class="icon">${item.categoryItem || ""}</p> 
+        <span class="name">${capitalizeFirstLetter(item.name)}</span>
+      </div>
+      <div class="right">
+        <input type="text" class="amount" value="" readonly>
+        <input type="checkbox" class="checkbox" id="${item.name}">
+        <label class="checkmark" for="${item.name}"></label>
+      </div>
+    `;
+
+    listItems.insertBefore(div, listItems.firstChild);
+    searchBar.value = ""; // Suchleiste leeren
+    searchResults.innerHTML = ""; // Suchergebnisse leeren
+
+    searchBar.value = ""; // Suchleiste leeren
+    searchResults.innerHTML = "";
+  
+    // Mengenbearbeitung aktivieren
+    activateAmountEditing(div.querySelector(".amount"));
+    //activateDragAndDrop(div);
+
+    const checkbox = div.querySelector("input[type='checkbox']");
+
+    checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+            div.classList.add('disappear');
+            setTimeout(() => {
+                div.remove();
+            }, 200);
+            
+        }
+    });
 }
