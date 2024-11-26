@@ -1,7 +1,7 @@
 // All Mechanics and Functions for the grocery-site
 
 import * as db from './database-handler.js';
-import { capitalizeFirstLetter } from './utils.js';
+import { capitalizeFirstLetter, activateAmountEditing } from './utils.js';
 
 const searchBar = document.querySelector(".search-bar");
 const searchResults = document.querySelector(".search-results");
@@ -102,7 +102,7 @@ function addItemToList(item) {
 
     div.innerHTML = `
       <div class="left">
-        <p class="icon">${item.categoryItem || ""}</p> 
+        <p class="icon">${item.categoryItem || "ㅤ"}</p> 
         <span class="name">${capitalizeFirstLetter(item.name)}</span>
       </div>
       <div class="right">
