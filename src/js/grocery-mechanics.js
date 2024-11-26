@@ -101,11 +101,11 @@ function addItemToList(item) {
     const divElements = document.querySelectorAll('div > div');
     const matchingDiv = Array.from(divElements).find(outerDiv => {
         const span = outerDiv.querySelector('span'); // Check for a span within the inner div
-        return span && span.textContent === item.name; // Match the exact text
+        return span && span.textContent.toLowerCase() === item.name; // Match the exact text
     });
 
     if (matchingDiv != null) {
-        return null;
+        return;
     }
 
     div.innerHTML = `

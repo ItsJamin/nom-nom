@@ -151,3 +151,8 @@ body * {
   opacity: 0;
   transition: opacity 0.2s ease; /* Übergang der Opazität */
 }
+
+.invalid * {
+  color: rgb(142, 54, 54);
+  transition: color 0.2s ease; /* Übergang der Opazität */
+}
