@@ -55,17 +55,7 @@ export function getObjectsForQuery(query, starting) {
     }
     
     results = results.map(item => {
-        // Find the category name
-        const categoryItem = tCategories.find(category => category.id === item.category)?.icon || "ㅤ";
-
-        // Find the unit, if applicable
-        const unitInfo = tUnits.find(unit => unit.id === item.unit)[0];
-
-        return {
-            name: item.name,
-            categoryItem: categoryItem,
-            unitUnit: unitInfo
-        };
+        return createElementInfo(item);
     });
 
     return results;
@@ -79,6 +69,18 @@ export function createItem(name) {
     }
     tItems.push(item);
 
+    return createElementInfo(item);
+}
+
+export function getOrCreateItemByName(name) {
+    var item = Array.from(tItems).find(entry => {
+        return name === entry?.name;
+    });
+
+    return (item !== undefined ? createElementInfo(item) : createItem(name));
+}
+
+function createElementInfo(item) {
     const categoryItem = tCategories.find(category => category.id === item.category)?.icon || "ㅤ";
     const unitInfo = tUnits.find(unit => unit.id === item.unit)[0];
 

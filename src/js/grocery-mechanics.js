@@ -15,7 +15,8 @@ searchBar.addEventListener("input", (event) => {
 searchBar.addEventListener("keypress", (event) => {
     const query = event.target.value.trim();
     if (event.key === "Enter" && query.length > 0) {
-      addItemToList(capitalizeFirstLetter(query), "ㅤ");
+        var item = db.getOrCreateItemByName(query.toLowerCase());
+        addItemToList(item);
     }
 });
 
@@ -88,7 +89,6 @@ function updateSearchResults(query) {
             <div class="right"></div>
         `;
         ghostResult.addEventListener("click", () => {
-            // TODO: Create new database entry
             var item = db.createItem(query);
             addItemToList(item);
         });
