@@ -1,4 +1,4 @@
-// All Mechanics and Functions for the grocery-site
+// All Mechanics and Functions for the grocery-list-site
 
 import * as db from './database-handler.js';
 import { capitalizeFirstLetter, activateAmountEditing } from './utils.js';
@@ -12,6 +12,12 @@ searchBar.addEventListener("input", (event) => {
     updateSearchResults(query);
 });
 
+searchBar.addEventListener("keypress", (event) => {
+    const query = event.target.value.trim();
+    if (event.key === "Enter" && query.length > 0) {
+      addItemToList(capitalizeFirstLetter(query), "ㅤ");
+    }
+});
 
 
 function updateSearchResults(query) {
@@ -22,7 +28,7 @@ function updateSearchResults(query) {
     query = query.toLowerCase();
 
     // Auf die Datenbank zugreifen und Ergebnisse holen
-    const filteredItems = db.getObjectsForQuery(query);
+    const filteredItems = db.getObjectsForQuery(query, true);
 
     // Gefundene Ergebnisse anzeigen
     var i = 0;
@@ -129,7 +135,7 @@ function addItemToList(item) {
   
     // Mengenbearbeitung aktivieren
     activateAmountEditing(div.querySelector(".amount"));
-    //activateDragAndDrop(div);
+    activateDragAndDrop(div);
 
     const checkbox = div.querySelector("input[type='checkbox']");
 
@@ -142,4 +148,68 @@ function addItemToList(item) {
             
         }
     });
+}
+
+// Drag-and-Drop-Funktionalität
+function activateDragAndDrop(divItem) {
+    const placeholder = document.createElement("div");
+    placeholder.classList.add("placeholder");
+
+
+    // Mobile: Touch-based Drag-and-Drop
+    divItem.addEventListener("touchstart", (event) => {
+        const touch = event.touches[0];
+        divItem.classList.add("dragging");
+        divItem.dataset.startX = touch.clientX;
+        divItem.dataset.startY = touch.clientY;
+        //list.insertBefore(placeholder, item.nextSibling);
+    });
+
+    divItem.addEventListener("touchmove", (event) => {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const currentY = touch.clientY;
+        const draggingItem = document.querySelector(".dragging");
+
+        draggingItem.style.position = "absolute";
+        draggingItem.style.top = `${touch.clientY - draggingItem.offsetHeight / 2}px`;
+        draggingItem.style.left = `${touch.clientX - draggingItem.offsetWidth / 2}px`;
+
+        const afterElement = getDragAfterElement(listItems, currentY);
+        if (afterElement == null) {
+            listItems.appendChild(placeholder);
+        } else {
+            listItems.insertBefore(placeholder, afterElement);
+        }
+    });
+
+    divItem.addEventListener("touchend", () => {
+        const draggingItem = document.querySelector(".dragging");
+        listItems.insertBefore(draggingItem, placeholder);
+        placeholder.remove();
+        draggingItem.classList.remove("dragging");
+        draggingItem.style.position = "";
+        draggingItem.style.top = "";
+        draggingItem.style.left = "";
+    });
+}
+
+// Hilfsfunktion, um das Element nach der aktuellen Position zu ermitteln
+function getDragAfterElement(container, y) {
+    const draggableElements = [
+        ...container.querySelectorAll(".item:not(.dragging)"),
+    ];
+
+    return draggableElements.reduce(
+        (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+        },
+        { offset: Number.NEGATIVE_INFINITY }
+    ).element;
 }

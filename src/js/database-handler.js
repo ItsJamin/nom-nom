@@ -41,14 +41,20 @@ var tUnits = [
     { id: 2, units: ["stk"], factor: [1] },
 ];
 
-export function getObjectsForQuery(query) {
+export function getObjectsForQuery(query, starting) {
     // Normalize the query string for case-insensitive comparison
     query = query.toLowerCase();
 
     // Filter the items based on substring match
-    const results = tItems.filter(item => 
-        item.name.toLowerCase().includes(query) || query.includes(item.name.toLowerCase())
-    ).map(item => {
+    if (starting) {
+        var results = tItems.filter(item => 
+            item.name.toLowerCase().startsWith(query) || query.startsWith(item.name.toLowerCase()));
+    } else { 
+        var results = tItems.filter(item => 
+            item.name.toLowerCase().includes(query) || query.includes(item.name.toLowerCase()));
+    }
+    
+    results = results.map(item => {
         // Find the category name
         const categoryItem = tCategories.find(category => category.id === item.category)?.icon || "ㅤ";
 
