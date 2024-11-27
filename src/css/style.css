@@ -12,6 +12,8 @@ body * {
   padding: 0;
   background-color: #fffbf8;
   font-size: 20px;
+  color: #2f2f2f;
+  overflow: hidden;
 }
 
 .divider {
@@ -30,7 +32,6 @@ body * {
   margin: 10px;
   margin-top: 20px;
   padding: 10px;
-  font-size: 16px;
   width: 95%;
   box-sizing: border-box;
 }
@@ -107,9 +108,10 @@ body * {
 .navbar {
   display: flex;
   justify-content: space-around;
-  background-color: #7b5c31;
+  align-items: center;
   border-top: 1px solid #ccc;
   width: 100%;
+  height: 5rem;
 }
 
 .navbar button {
@@ -118,14 +120,22 @@ body * {
   font-size: 18px;
   cursor: pointer;
   width: 50%;
-  height: 4rem;
-  border-radius: 0%;
+  height: 3rem;
+  border-radius: 10px;
+  margin: 0% 2.5%;
+}
+
+.navbar .inactive {
+  width: 60%;
+  transition: width 0.3s ease, background-color 1s ease;
+  background-color: rgb(130, 89, 13);
 }
 
 .navbar .active {
+  width: 30%;
   background-color: green;
+  transition: width 0.1s ease, background-color 0.5s ease;
 }
-
 
 /* Checkbox */
 

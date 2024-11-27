@@ -41,12 +41,33 @@
   
       <!-- Navigation Bar -->
       <nav class="navbar">
-        <button class="active">📝</button>
-        <button>📖</button>
+        <button class="grocery-btn active" onclick="toggleSite(0)">📝</button>
+        <button class="recipe-btn inactive" onclick="toggleSite(1)">📖</button>
       </nav>
     </div>
     <script src="js/grocery-mechanics.js" type="module"></script>
     <script src="js/database-handler.js" type="module"></script>
     <script src="js/utils.js" type="module"></script>
+
+    <script>
+      function toggleSite(btn) {
+        const groceryButton = document.querySelector(".grocery-btn");
+        const recipeButton = document.querySelector(".recipe-btn");
+        
+        if (btn == 1) {
+          groceryButton.classList.add("inactive");
+          groceryButton.classList.remove("active");
+
+          recipeButton.classList.add("active");
+          recipeButton.classList.remove("inactive");
+        } else {
+          groceryButton.classList.add("active");
+          groceryButton.classList.remove("inactive");
+
+          recipeButton.classList.add("inactive");
+          recipeButton.classList.remove("active");
+        }
+    };
+    </script>
   </body>
 </html>
