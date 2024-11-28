@@ -36,6 +36,11 @@ body * {
   box-sizing: border-box;
 }
 
+.search-bar:focus {
+  outline: none;
+  border-color: green;
+}
+
 .list {
   flex: 1;
   overflow-y: auto;
@@ -62,6 +67,7 @@ body * {
   height: 2rem; /* Gleiche Höhe wie ein Listenelement */
   
   border: 2px dashed #ccc;
+  border-radius: 10px;
   margin-top: 2%;
 }
 
@@ -79,7 +85,7 @@ body * {
 .result .right {
   display: flex;
   align-items: center;
-  gap: 10px; /* Platz zwischen Checkbox und Menge */
+  gap: 1em; /* Platz zwischen Checkbox und Menge */
 }
 
 
@@ -91,15 +97,13 @@ body * {
 .amount {
   border: none;
   background: transparent;
-  font-size: 16px;
   color: gray;
-  width: 50px;
+  width: 3rem;
   text-align: right;
 }
 
 .amount:focus {
-  border-bottom: 1px solid green;
-  background-color: #f9f9f9;
+  border-bottom: 2px solid green;
   outline: none;
   color: black;
 }
@@ -162,7 +166,19 @@ body * {
   transition: opacity 0.2s ease; /* Übergang der Opazität */
 }
 
-.invalid * {
-  color: rgb(142, 54, 54);
-  transition: color 0.2s ease; /* Übergang der Opazität */
+.disappear .name {
+  text-decoration: line-through;
+  transition: text-decoration 0.2s ease;
 }
+
+.invalid * {
+  color: rgb(255, 67, 67);
+  border-color: rgb(255, 67, 67);
+}
+
+.invalid-remove * {
+  color: #2f2f2f;
+  border-color: gray;
+  transition: color 0.5s ease, border-color 0.5s ease;
+}
+
