@@ -80,6 +80,10 @@ export function getOrCreateItemByName(name) {
     return (item !== undefined ? createElementInfo(item) : createItem(name));
 }
 
+export function deleteItem(name) {
+    tItems = tItems.filter(item => item.name !== name);
+}
+
 function createElementInfo(item) {
     const categoryItem = tCategories.find(category => category.id === item.category)?.icon || "ㅤ";
     const unitInfo = tUnits.find(unit => unit.id === item.unit)[0];
