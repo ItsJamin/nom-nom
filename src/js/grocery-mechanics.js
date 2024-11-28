@@ -56,7 +56,9 @@ function updateSearchResults(query) {
                 // Element aus der Liste entfernen
                 result.classList.add("disappear");
                 setTimeout(() => {
+                    db.deleteItem(item.name)
                     result.remove();
+                    removeItemFromListByName(item.name);
                 }, 200);
             }
         });
@@ -102,6 +104,9 @@ function addItemToList(item) {
     div.classList.add("item");
     div.setAttribute("draggable", "true");
 
+    searchBar.value = ""; // Suchleiste leeren
+    searchResults.innerHTML = ""; // Suchergebnisse leeren
+
     
     // Check if item is already in the list
     const divElements = document.querySelectorAll('div > div');
@@ -111,6 +116,7 @@ function addItemToList(item) {
     });
 
     if (matchingDiv != null) {
+        showElementAsInvalid(matchingDiv.querySelector('span').parentElement.parentElement);
         return;
     }
 
@@ -127,11 +133,6 @@ function addItemToList(item) {
     `;
 
     listItems.insertBefore(div, listItems.firstChild);
-    searchBar.value = ""; // Suchleiste leeren
-    searchResults.innerHTML = ""; // Suchergebnisse leeren
-
-    searchBar.value = ""; // Suchleiste leeren
-    searchResults.innerHTML = "";
   
     // Mengenbearbeitung aktivieren
     activateAmountEditing(div.querySelector(".amount"));
@@ -212,4 +213,27 @@ function getDragAfterElement(container, y) {
         },
         { offset: Number.NEGATIVE_INFINITY }
     ).element;
+}
+
+function removeItemFromListByName(name) {
+    const items = listItems.querySelectorAll(".item"); // Alle Items der Liste
+    items.forEach((item) => {
+        const itemName = item.querySelector(".name").textContent.toLowerCase();
+        if (itemName === name.toLowerCase()) {
+            item.remove(); // Entferne das Item
+        }
+    });
+}
+
+function showElementAsInvalid(elem) {
+    
+    elem.classList.add('invalid');
+    setTimeout(() => {
+        elem.classList.add('invalid-remove');
+    }, 200);
+
+    setTimeout(() => {
+        elem.classList.remove('invalid');
+        elem.classList.remove('invalid-remove');
+    }, 500);
 }
